@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: cd31b5fd0cebd364580445091f9a4e3c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 299189
+  packageName: 'Typing FX Pro: Free Edition'
+  packageVersion: 1.0.1
+  assetPath: Assets/IntelligentLabs/TypingFXProFREE/Scripts/TextDisplay.cs
+  uploadId: 732827

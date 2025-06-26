@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d5075b6da9ec2e34393620b6fb107936
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 299189
+  packageName: 'Typing FX Pro: Free Edition'
+  packageVersion: 1.0.1
+  assetPath: Assets/IntelligentLabs/TypingFXProFREE/Scripts/EffectManager.cs
+  uploadId: 732827
