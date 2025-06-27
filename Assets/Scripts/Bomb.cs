@@ -11,9 +11,9 @@ public class Bomb : MonoBehaviour
 
     private void Start()
     {
-        explosion = GameObject.Find("Explosion").transform;
-        expEffect = explosion.GetComponent<ParticleSystem>();
-        expAudio = explosion.GetComponent<AudioSource>();
+        //explosion = GameObject.Find("SmallExplosionEffect").transform;
+        //expEffect = explosion.GetComponent<ParticleSystem>();
+        //expAudio = explosion.GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -35,9 +35,10 @@ public class Bomb : MonoBehaviour
             }
         }
 
-        explosion.position = transform.position;
-        expEffect.Play();
-        expAudio.Play();
+        //explosion.position = transform.position;
+        //expEffect.Play();
+        //expAudio.Play();
+        GameManager.Instance.SpawnExplosionParticle(transform);
 
         Destroy(gameObject);
     }

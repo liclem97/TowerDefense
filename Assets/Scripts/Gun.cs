@@ -59,10 +59,25 @@ public class Gun : MonoBehaviour
                     playerMove.currentCameraIndex = cctv.cameraIndex;
 
                 }
-                else if (hitInfo.transform.name == "GameStartButton")
+                else if (hitInfo.transform.name == "GameStartButton") // 게임 스타트 버튼을 누름
                 {
                     GameManager.Instance.GameStart();
                 }
+                else if (hitInfo.transform.name == "UpgradeBtn")
+                {
+                    Turret turret = hitInfo.transform.gameObject.GetComponentInParent<Turret>();
+                    if (turret)
+                    {   
+                        if (turret.turretState == Turret.TurretState.Deactivate)
+                        {
+                            turret.turretState = Turret.TurretState.Searching; // 활성화
+                        }
+                        else
+                        {
+                            turret.UpgradeTurret();
+                        }
+                    }
+                }               
                 //Debug.DrawRay(ray.origin, ray.direction * 200, Color.red, 1f); // 레이캐스트 시각화
             }
         }

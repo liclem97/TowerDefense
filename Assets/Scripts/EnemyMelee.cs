@@ -31,11 +31,12 @@ public class EnemyMelee : DroneAI
     {
         GameManager.Instance.AddPlayerCoin(enemyCoin);
         state = DroneState.Die;
-        explosion.position = transform.position;
-        expEffect.Play();
-        expAudio.Play();
+        //explosion.position = transform.position;
+        //expEffect.Play();
+        //expAudio.Play();
 
         enemyAnimator.SetTrigger("Death");
+        agent.enabled = false;
         Destroy(gameObject, 2.18f);
     }
 

@@ -16,8 +16,7 @@ public class DroneAI : MonoBehaviour
     [Header("Movement / Combat")]
     [SerializeField] protected float moveSpeed = 1f;
     [SerializeField] protected float attackRange = 3f;
-    [SerializeField] protected float attackPower = 2f;
-    //[SerializeField] private GameObject bulletPrefab;
+    [SerializeField] protected float attackPower = 2f;    
     [SerializeField] protected Transform bulletSpawnPoint;
     [SerializeField] protected LayerMask targetLayerMask;    
 
@@ -33,6 +32,7 @@ public class DroneAI : MonoBehaviour
     [SerializeField] protected Transform explosion;
     [SerializeField] protected ParticleSystem expEffect;
     [SerializeField] protected AudioSource expAudio;
+    [SerializeField] private Transform meshTransform;
 
     protected DroneState state = DroneState.Idle;
     //protected EnemyType enemyType = EnemyType.Drone;
@@ -61,7 +61,7 @@ public class DroneAI : MonoBehaviour
         healthSlider.value = (hp / startHP) * 100;
 
         if (explosion == null)
-            explosion = GameObject.Find("Explosion").transform;
+            explosion = GameObject.Find("SmallExplosionEffect").transform;
         if (expEffect == null) expEffect = explosion.GetComponent<ParticleSystem>();
         if (expAudio == null) expAudio = explosion.GetComponent<AudioSource>();
     }
@@ -160,8 +160,8 @@ public class DroneAI : MonoBehaviour
 
         if (hp > 0) // 죽지 않았으면 Damage 상태로 변경
         {
-            state = DroneState.Damage;
-            StartCoroutine(nameof(Damage));
+            //state = DroneState.Damage;
+            //StartCoroutine(nameof(Damage));
         }
         else
         {
@@ -185,9 +185,9 @@ public class DroneAI : MonoBehaviour
     {
         GameManager.Instance.AddPlayerCoin(enemyCoin);
         state = DroneState.Die;
-        explosion.position = transform.position;
-        expEffect.Play();
-        expAudio.Play();
+       // explosion.position = meshTransform.position;
+       // expEffect.Play();
+       // expAudio.Play();
         Destroy(gameObject);
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7652940284516714094}
   - component: {fileID: 3240765006005755394}
   - component: {fileID: 586404589093692033}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Enemy_Drone
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ MonoBehaviour:
   idleDelayTime: 2
   attackDelayTime: 2
   damageFreeze: 0.15
-  moveSpeed: 5
+  moveSpeed: 1
   attackRange: 5
   attackPower: 1
   bulletSpawnPoint: {fileID: 5328007930261368442}
@@ -89,6 +89,7 @@ MonoBehaviour:
   explosion: {fileID: 0}
   expEffect: {fileID: 0}
   expAudio: {fileID: 0}
+  meshTransform: {fileID: 6250506112227683455}
 --- !u!208 &3240765006005755394
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -136,7 +137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5328007930261368442}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -286,6 +287,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy HPBar  Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 7050469093660038976, guid: 515cc49b3f22e9e44a00f9ea3ae4ba92, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737604220186276140, guid: 515cc49b3f22e9e44a00f9ea3ae4ba92, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8114128924128498575, guid: 515cc49b3f22e9e44a00f9ea3ae4ba92, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8282753351491654902, guid: 515cc49b3f22e9e44a00f9ea3ae4ba92, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 8414430053194093199, guid: 515cc49b3f22e9e44a00f9ea3ae4ba92, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -297,6 +314,10 @@ PrefabInstance:
     - target: {fileID: 8414430053194093199, guid: 515cc49b3f22e9e44a00f9ea3ae4ba92, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8979901950552077049, guid: 515cc49b3f22e9e44a00f9ea3ae4ba92, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -373,9 +394,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8000486003881936257}
     m_Modifications:
+    - target: {fileID: 100000, guid: 6cb8d643e19f708488e923bb76b1cad2, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 6cb8d643e19f708488e923bb76b1cad2, type: 3}
       propertyPath: m_Name
       value: PA_Drone
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 6cb8d643e19f708488e923bb76b1cad2, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 6cb8d643e19f708488e923bb76b1cad2, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 6cb8d643e19f708488e923bb76b1cad2, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 6cb8d643e19f708488e923bb76b1cad2, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 6cb8d643e19f708488e923bb76b1cad2, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 6cb8d643e19f708488e923bb76b1cad2, type: 3}
       propertyPath: m_LocalPosition.y
