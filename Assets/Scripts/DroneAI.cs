@@ -18,7 +18,8 @@ public class DroneAI : MonoBehaviour
     [SerializeField] protected float attackRange = 3f;
     [SerializeField] protected float attackPower = 2f;    
     [SerializeField] protected Transform bulletSpawnPoint;
-    [SerializeField] protected LayerMask targetLayerMask;    
+    [SerializeField] protected LayerMask targetLayerMask;
+    [SerializeField] private GameObject attackEffect;
 
     [Header("Stats")]
     [SerializeField] protected float hp;
@@ -60,10 +61,10 @@ public class DroneAI : MonoBehaviour
         hp = startHP;
         healthSlider.value = (hp / startHP) * 100;
 
-        if (explosion == null)
-            explosion = GameObject.Find("SmallExplosionEffect").transform;
-        if (expEffect == null) expEffect = explosion.GetComponent<ParticleSystem>();
-        if (expAudio == null) expAudio = explosion.GetComponent<AudioSource>();
+        //if (explosion == null)
+        //    explosion = GameObject.Find("SmallExplosionEffect").transform;
+        //if (expEffect == null) expEffect = explosion.GetComponent<ParticleSystem>();
+        //if (expAudio == null) expAudio = explosion.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -138,10 +139,21 @@ public class DroneAI : MonoBehaviour
         if (Physics.Raycast(bulletSpawnPoint.position, bulletDirection, out RaycastHit hitInfo, attackRange, targetLayerMask))
         {
             // TODO: 불릿 스폰 포인트에서 총알 발사 이펙트 재생
-            expEffect.Play();
+            //expEffect.Play();
 
-            explosion.forward = hitInfo.normal;
-            explosion.position = hitInfo.point;
+            //explosion.forward = hitInfo.normal;
+            //explosion.position = hitInfo.point;
+
+            if (attackEffect)
+            {
+                GameObject spawnedEffect = Instantiate(attackEffect, hitInfo.point, Quaternion.identity);
+                if (spawnedEffect)
+                {
+                    spawnedEffect.GetComponent<ParticleSystem>().Play();
+                    Destroy(spawnedEffect, 3f);
+                }
+                //spawnedEffect.GetComponent<ParticleSystem>().Play();
+            }
 
             Debug.DrawRay(bulletSpawnPoint.position, bulletDirection * attackRange, Color.red, 1f);
             if (hitInfo.transform.gameObject.TryGetComponent<MainTarget>(out MainTarget mainTarget))
@@ -185,6 +197,8 @@ public class DroneAI : MonoBehaviour
     {
         GameManager.Instance.AddPlayerCoin(enemyCoin);
         state = DroneState.Die;
+
+        GameManager.Instance.SpawnExplosionParticle(transform);
        // explosion.position = meshTransform.position;
        // expEffect.Play();
        // expAudio.Play();

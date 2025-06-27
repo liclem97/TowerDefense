@@ -115,7 +115,7 @@ MonoBehaviour:
   damageFreeze: 0.15
   moveSpeed: 1
   attackRange: 3
-  attackPower: 30
+  attackPower: 10
   bulletSpawnPoint: {fileID: 0}
   targetLayerMask:
     serializedVersion: 2
@@ -127,6 +127,7 @@ MonoBehaviour:
   explosion: {fileID: 0}
   expEffect: {fileID: 0}
   expAudio: {fileID: 0}
+  meshTransform: {fileID: 0}
   enemyAnimator: {fileID: 5943159002500653814}
 --- !u!1001 &4801325147241892391
 PrefabInstance:

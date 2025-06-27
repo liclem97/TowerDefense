@@ -17,9 +17,11 @@ public class MainTarget : MonoBehaviour
         if (targetHP <= 0)
         {
             targetHP = 0;
-            GameManager.Instance.GameOver();
+            if (GameManager.Instance.isGameStarted == true)
+            {
+                GameManager.Instance.GameOver();
+            }
         }
         UIManager.Instance.towerHPText.text = $"TOWER HP\r\n{targetHP}/100";    // UI 업데이트
-        // todo: 화면 피격 효과
     }
 }

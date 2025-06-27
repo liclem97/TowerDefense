@@ -34,6 +34,7 @@ public class EnemyMelee : DroneAI
         //explosion.position = transform.position;
         //expEffect.Play();
         //expAudio.Play();
+        GameManager.Instance.SpawnExplosionParticle(transform);
 
         enemyAnimator.SetTrigger("Death");
         agent.enabled = false;

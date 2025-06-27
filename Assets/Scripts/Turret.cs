@@ -6,7 +6,7 @@ public class Turret : MonoBehaviour
     public enum TurretState { Deactivate, Searching, Attack }
 
     [Header("Turret Stats")]
-    [SerializeField] private float gunDamage = 1f;     // 포탑이 적에게 주는 피해량
+    [SerializeField] private float gunDamage = 3f;     // 포탑이 적에게 주는 피해량
     [SerializeField] private float gunDelay = 2f;      // 공격 간격(초 단위)
     [SerializeField] private float gunRadius = 10f;     // 포탑의 공격 범위 (반경)
     [SerializeField] private bool isBombAttack = false;
@@ -239,6 +239,11 @@ public class Turret : MonoBehaviour
             if (bombRb != null)
             {
                 bombRb.AddForce(throwDirection * bombThrowForce, ForceMode.Impulse);
+            }
+            Bomb spawnedBomb = bomb.GetComponent<Bomb>();
+            if (spawnedBomb)
+            {
+                spawnedBomb.maxDamage = gunDamage;
             }
         }
     }

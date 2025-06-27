@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Gun : MonoBehaviour
@@ -26,8 +27,8 @@ public class Gun : MonoBehaviour
 
     private void Update()
     {
-
-        if (ARAVRInput.GetDown(ARAVRInput.Button.HandTrigger)) // 오른손 핸드 트리거, pc 마우스 우클릭
+        // vr시 handTrigger -> IndexTrigger
+        if (ARAVRInput.GetDown(ARAVRInput.Button.HandTrigger, ARAVRInput.Controller.RTouch)) // 오른손 핸드 트리거, pc 마우스 우클릭
         {
             ARAVRInput.PlayVibration(ARAVRInput.Controller.RTouch); // 컨트롤러 진동 재생
 
@@ -63,11 +64,19 @@ public class Gun : MonoBehaviour
                 {
                     GameManager.Instance.GameStart();
                 }
+                else if (hitInfo.transform.name == "GameRestartButton")
+                {
+                    SceneManager.LoadScene("MainMap"); // 게임 재시작
+                }
+                else if (hitInfo.transform.name == "GameExitButton")
+                {
+                    Application.Quit(); // 게임 종료
+                }
                 else if (hitInfo.transform.name == "UpgradeBtn")
                 {
                     Turret turret = hitInfo.transform.gameObject.GetComponentInParent<Turret>();
                     if (turret)
-                    {   
+                    {
                         if (turret.turretState == Turret.TurretState.Deactivate)
                         {
                             turret.turretState = Turret.TurretState.Searching; // 활성화

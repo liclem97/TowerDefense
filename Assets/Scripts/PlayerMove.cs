@@ -9,6 +9,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private Camera[] camerasToMove;
     [SerializeField] private Image noiseImage;
     [SerializeField] private AudioClip noiseAudio;
+    [SerializeField] private float rotateSpeed = 60f; // 회전 속도 (도/초)
 
     private AudioSource audioSource;
     public int currentCameraIndex = 0;
@@ -29,8 +30,18 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
+        // 왼손 썸스틱 좌우 입력 (Oculus 기준: -1 ~ +1)
+        float stickX = ARAVRInput.GetAxis("Horizontal", ARAVRInput.Controller.LTouch);
+
+        if (Mathf.Abs(stickX) > 0.1f) // dead zone 처리
+        {
+            float rotateAmount = stickX * rotateSpeed * Time.deltaTime;
+            transform.Rotate(0f, rotateAmount, 0f); // Y축 회전 (월드 기준)
+        }
+
         if (!GameManager.Instance.isGameStarted) return; // 게임이 시작되지 않았으면 카메라 이동을 막음
-                                                         // 왼손 X버튼 or 마우스 좌클릭 → 다음 카메라
+
+        // 왼손 X버튼 or 마우스 좌클릭 → 다음 카메라
         if (ARAVRInput.GetDown(ARAVRInput.Button.One, ARAVRInput.Controller.LTouch))
         {
             currentCameraIndex = (currentCameraIndex + 1) % camerasToMove.Length;

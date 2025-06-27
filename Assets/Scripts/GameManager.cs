@@ -18,6 +18,12 @@ public class GameManager : MonoBehaviour
     [Header("Target")]
     public Transform mainTarget;
 
+    //게임 오버
+    [Header("Game Over")]
+    [SerializeField] private GameObject player; // 플레이어 오브젝트
+    [SerializeField] private Transform gameOverPosition; // 게임 오버 시 플레이어가 이동할 위치
+    [SerializeField] private Canvas redScreenEffect; // 빨개지는 이펙트
+
     [Header("Explosion Effect")]
     [SerializeField] private GameObject explosionEffect;
 
@@ -54,11 +60,11 @@ public class GameManager : MonoBehaviour
     {
         if (explosionEffect)
         {
-            GameObject spawnedEffect = Instantiate(explosionEffect, transform);
+            GameObject spawnedEffect = Instantiate(explosionEffect, transform.position, Quaternion.identity);
             if (spawnedEffect)
             {
                 spawnedEffect.GetComponent<ParticleSystem>().Play();
-                Debug.Log("effect spawned");
+                Destroy(spawnedEffect, 2f);
             }
             //spawnedEffect.GetComponent<ParticleSystem>().Play();
         }
@@ -84,6 +90,19 @@ public class GameManager : MonoBehaviour
             case WaveState.BeforeWave: BeforeWave(); break;
             case WaveState.Process: break;
             case WaveState.EndWave: break;
+        }
+
+        if (!player)
+        {
+            player = GameObject.Find("Player").gameObject;
+        }
+        if (!gameOverPosition)
+        {
+            gameOverPosition = GameObject.Find("GameOverPosition").transform;
+        }
+        if (!redScreenEffect)
+        {
+            redScreenEffect = GameObject.Find("redEffectCanvas").gameObject.GetComponent<Canvas>();
         }
     }
 
@@ -157,16 +176,16 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        // 게임 오버 시 맵 전체의 적을 찾음
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        foreach (GameObject enemy in enemies)
-        {
-            Destroy(enemy); // 적을 찾아서 모두 제거
-        }
-
         isGameStarted = false; // 게임 종료 상태로 설정 (원하시는 상태로 조정)
-        Debug.Log("GameOVer");
+        // 시점 변경 (게임 오버 카메라 활성화)
+        player.transform.position = gameOverPosition.position;
+        player.transform.rotation = gameOverPosition.rotation;
+
+        // Game Over UI 표시
+        UIManager.Instance.gameOverUI.SetActive(true);
+
+        // 빨개지는 이펙트 
+        redScreenEffect.gameObject.SetActive(true);
     }
 
     public void AddPlayerCoin(int coin)
