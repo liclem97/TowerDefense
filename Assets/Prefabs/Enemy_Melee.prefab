@@ -110,16 +110,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50a914c76b544f640b37559f6afc6481, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleDelayTime: 2
+  idleDelayTime: 1
   attackDelayTime: 3
   damageFreeze: 0.15
-  moveSpeed: 1
+  moveSpeed: 2
   attackRange: 3
-  attackPower: 10
+  attackPower: 15
   bulletSpawnPoint: {fileID: 0}
   targetLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
+  attackEffect: {fileID: 0}
   hp: 10
   startHP: 10
   enemyCoin: 50

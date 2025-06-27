@@ -26,6 +26,6 @@ public class UIManager : MonoBehaviour
 
         // 최초 인스턴스 초기화
         Instance = this;
-        DontDestroyOnLoad(gameObject);   // 씬 전환 시에도 유지
+       // DontDestroyOnLoad(gameObject);   // 씬 전환 시에도 유지
     } 
 }

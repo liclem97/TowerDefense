@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// 소지 중인 게임 오브젝트가 항상 플레이어 카메라를 바라보도록 한다
 public class RotateToPlayer : MonoBehaviour
 {
     private Transform mainCamera;
@@ -8,7 +9,7 @@ public class RotateToPlayer : MonoBehaviour
     {
         if (Camera.main != null)
         {
-            mainCamera = Camera.main.transform;
+            mainCamera = Camera.main.transform; // 메인 카메라의 위치를 찾음
         }
         else
         {

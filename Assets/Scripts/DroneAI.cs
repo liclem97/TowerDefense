@@ -5,51 +5,52 @@ using UnityEngine.UI;
 
 public class DroneAI : MonoBehaviour
 {
-    protected enum DroneState { Idle, Move, Attack, Damage, Die }
-    //protected enum EnemyType { Drone, Melee }
+    protected enum DroneState { Idle, Move, Attack, Damage, Die }   // 드론 상태 열거형
 
     [Header("State Timers")]
-    [SerializeField] protected float idleDelayTime = 2f;
-    [SerializeField] protected float attackDelayTime = 2f;
-    [SerializeField] protected float damageFreeze = 0.15f;
+    [SerializeField] protected float idleDelayTime = 2f;            // Idle에 있는 시간
+    [SerializeField] protected float attackDelayTime = 2f;          // 공격 딜레이 타임
+    [SerializeField] protected float damageFreeze = 0.05f;          // 공격 당할 시 멈춤 시간
 
     [Header("Movement / Combat")]
-    [SerializeField] protected float moveSpeed = 1f;
-    [SerializeField] protected float attackRange = 3f;
-    [SerializeField] protected float attackPower = 2f;    
-    [SerializeField] protected Transform bulletSpawnPoint;
-    [SerializeField] protected LayerMask targetLayerMask;
-    [SerializeField] private GameObject attackEffect;
+    [SerializeField] protected float moveSpeed = 1f;                // 이동속도
+    [SerializeField] protected float attackRange = 3f;              // 공격거리
+    [SerializeField] protected float attackPower = 2f;              // 공격 대미지
+    [SerializeField] protected Transform bulletSpawnPoint;          // 총알이 나가는 위치
+    [SerializeField] protected LayerMask targetLayerMask;           // 목표의 레이어 마스크
+    [SerializeField] private GameObject attackEffect;               // 공격 이펙트
 
     [Header("Stats")]
-    [SerializeField] protected float hp;
-    [SerializeField] protected float startHP = 10f;
-    [SerializeField] protected int enemyCoin; // 적이 죽으면 플레이어가 획득하는 코인
+    [SerializeField] protected float hp;                            // 체력
+    [SerializeField] protected float startHP = 10f;                 // 시작 체력
+    [SerializeField] protected int enemyCoin;                       // 죽을 시 플레이어가 획득하는 코인
 
     [Header("UI References")]
-    [SerializeField] private Slider healthSlider;
+    [SerializeField] private Slider healthSlider;                   // 체력바 UI
 
     [Header("Effect References")]
-    [SerializeField] protected Transform explosion;
+    [SerializeField] protected Transform explosion;                 // 폭발 이펙트
     [SerializeField] protected ParticleSystem expEffect;
     [SerializeField] protected AudioSource expAudio;
-    [SerializeField] private Transform meshTransform;
+    [SerializeField] private Transform meshTransform;               // 공중에 떠있는 매쉬("드론 전용")
 
-    protected DroneState state = DroneState.Idle;
-    //protected EnemyType enemyType = EnemyType.Drone;
-    protected float currentTime;
-    protected Transform target;
-    protected NavMeshAgent agent;
-    protected NavMeshObstacle obstacle;
+    protected DroneState state = DroneState.Idle;                   // 상태 저장 변수
+    protected float currentTime;                                    // 경과 시간 저장 변수
+    protected Transform target;                                     // 타겟의 위치
+    protected NavMeshAgent agent;                                   // AI 이동
+    protected NavMeshObstacle obstacle;                             // AI 장애물
 
     void Start()
     {
-        InitEnemy();      
+        InitEnemy();
     }
 
+    /*********************************************************************************************
+    함수: InitEnemy
+    기능: 적 스폰 시 필요한 요소를 초기화 함
+    *********************************************************************************************/
     protected void InitEnemy()
     {
-        //target = GameObject.Find("Target").transform; // 씬에서 타겟을 찾음
         target = GameManager.Instance.mainTarget.transform;
         agent = GetComponent<NavMeshAgent>();
         obstacle = GetComponent<NavMeshObstacle>();
@@ -60,15 +61,11 @@ public class DroneAI : MonoBehaviour
 
         hp = startHP;
         healthSlider.value = (hp / startHP) * 100;
-
-        //if (explosion == null)
-        //    explosion = GameObject.Find("SmallExplosionEffect").transform;
-        //if (expEffect == null) expEffect = explosion.GetComponent<ParticleSystem>();
-        //if (expAudio == null) expAudio = explosion.GetComponent<AudioSource>();
     }
 
     void Update()
-    {
+    {   
+        // DroneState에 따른 함수 호출
         switch (state)
         {
             case DroneState.Idle: Idle(); break;
@@ -79,6 +76,11 @@ public class DroneAI : MonoBehaviour
         }
     }
 
+
+    /*********************************************************************************************
+    함수: Idle
+    기능: 일정 시간이 지나면 에이전트 활성화, 상태를 Move로 전환하고 목적지를 설정
+    *********************************************************************************************/
     void Idle()
     {
         currentTime += Time.deltaTime;   // 경과 시간 누적
@@ -93,6 +95,10 @@ public class DroneAI : MonoBehaviour
         }
     }
 
+    /*********************************************************************************************
+    함수: Move
+    기능: 목적지까지의 이동, 공격 거리 안에 목표가 있으면 Attack으로 전환
+    *********************************************************************************************/
     void Move()
     {
         // 타겟이 나의 공격 거리 안에 있음
@@ -103,6 +109,13 @@ public class DroneAI : MonoBehaviour
         }
     }
 
+    /*********************************************************************************************
+   함수: Attack
+   기능: 
+    1. 이동을 멈추고 다른 적이 피해가도록 Obstacle 활성
+    2. 타겟을 바라봄
+    3. 공격
+   *********************************************************************************************/
     protected void Attack()
     {
         currentTime += Time.deltaTime;      // 경과 시간 누적
@@ -118,7 +131,7 @@ public class DroneAI : MonoBehaviour
             {
                 Quaternion rot = Quaternion.LookRotation(lookPos);
                 transform.rotation = rot;
-            }    // 타겟을 바라봄
+            } 
 
             if (currentTime > attackDelayTime)  // 2초에 한번 씩 공격 가능
             {
@@ -133,17 +146,19 @@ public class DroneAI : MonoBehaviour
         }
     }
 
+    /*********************************************************************************************
+    함수: AttackProcess
+    기능: 
+    1. 목표 방향을 구함
+    2. 구한 방향으로 Ray 발사
+    3. Ray가 목표에 닿은 곳에 폭발 이펙트 생성
+    4. Target의 체력 감소
+    *********************************************************************************************/
     protected virtual void AttackProcess()
     {
         Vector3 bulletDirection = (target.position - bulletSpawnPoint.position).normalized;
         if (Physics.Raycast(bulletSpawnPoint.position, bulletDirection, out RaycastHit hitInfo, attackRange, targetLayerMask))
         {
-            // TODO: 불릿 스폰 포인트에서 총알 발사 이펙트 재생
-            //expEffect.Play();
-
-            //explosion.forward = hitInfo.normal;
-            //explosion.position = hitInfo.point;
-
             if (attackEffect)
             {
                 GameObject spawnedEffect = Instantiate(attackEffect, hitInfo.point, Quaternion.identity);
@@ -152,17 +167,23 @@ public class DroneAI : MonoBehaviour
                     spawnedEffect.GetComponent<ParticleSystem>().Play();
                     Destroy(spawnedEffect, 3f);
                 }
-                //spawnedEffect.GetComponent<ParticleSystem>().Play();
             }
 
             Debug.DrawRay(bulletSpawnPoint.position, bulletDirection * attackRange, Color.red, 1f);
             if (hitInfo.transform.gameObject.TryGetComponent<MainTarget>(out MainTarget mainTarget))
             {
                 mainTarget.OnTargetDamaged(attackPower);
-            }            
+            }
         }
     }
 
+    /*********************************************************************************************
+    함수: OnDamageProcess
+    기능: 
+    1. 체력 감소
+    2. 체력바 UI 갱신
+    3. 체력이 0일시 Die함수 호출
+    *********************************************************************************************/
     public virtual void OnDamageProcess(float amount)
     {
         if (state == DroneState.Die) return;
@@ -170,38 +191,26 @@ public class DroneAI : MonoBehaviour
         hp -= amount; // 적의 체력 감소
         healthSlider.value = (hp / startHP) * 100;  // 체력 UI 갱신        
 
-        if (hp > 0) // 죽지 않았으면 Damage 상태로 변경
-        {
-            //state = DroneState.Damage;
-            //StartCoroutine(nameof(Damage));
-        }
-        else
+        if (hp <= 0)
         {
             Die();
         }
     }
 
-    IEnumerator Damage()
-    {
-        agent.enabled = false;                                          // 길 찾기 중지
-        obstacle.enabled = true;                                        // 다른 드론이 피해가도록 obstacle 활성화
-
-        yield return new WaitForSeconds(damageFreeze);  // damageFreeze 시간동안 멈춤
-
-        obstacle.enabled = false;   // obstacle 해제
-        state = DroneState.Idle;    // Idle 상태로 변경
-        currentTime = 0f;           // 경과 시간 초기화
-    }
-
+    /*********************************************************************************************
+    함수: Die
+    기능: 
+    1. 드론의 상태를 Die로 변경
+    2. 플레이어에게 Coin을 줌
+    3. 자신의 위치에서 폭발 이펙트 생성
+    *********************************************************************************************/
     protected virtual void Die()
     {
-        GameManager.Instance.AddPlayerCoin(enemyCoin);
         state = DroneState.Die;
 
+        GameManager.Instance.AddPlayerCoin(enemyCoin);
         GameManager.Instance.SpawnExplosionParticle(transform);
-       // explosion.position = meshTransform.position;
-       // expEffect.Play();
-       // expAudio.Play();
+
         Destroy(gameObject);
     }
 }
