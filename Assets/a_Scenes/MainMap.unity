@@ -37374,7 +37374,7 @@ MonoBehaviour:
   - {fileID: 1685197765}
   - {fileID: 1188088494}
   noiseImage: {fileID: 997772394}
-  noiseAudio: {fileID: 8300000, guid: d3c16eac0db055547988cd6f173028ac, type: 3}
+  noiseAudio: {fileID: 8300000, guid: 08ab2ec7fb4062046adb6e0039239d2e, type: 3}
   rotateSpeed: 60
   currentCameraIndex: 0
 --- !u!114 &1621053584
